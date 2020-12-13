@@ -9,11 +9,13 @@ import java.util.stream.Stream;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -37,45 +39,15 @@ public class Lumberjack {
     for (String treeName: this.config.getConfigurationSection("trees").getKeys(false)) {
       logsVariations.add(Material.valueOf(treeName));
       leafVariations.add(
-        Material.valueOf(
-          config.getString(String.format("trees.%s.leaves", treeName))
-        )
+          Material.valueOf(
+            config.getString(String.format("trees.%s.leaves", treeName))
+          )
       );
     }
-  }
-
-  // 木を取得
-  public Set<Block> getTree(Block block) {
-    Set<Block> treeBlocks = new HashSet<Block>();
-
-    // 原木ブロックである場合
-    if (isLog(block)) {
-      // 木の幹を取得
-      Set<Block> stem = getStem(
-        block,
-        config.getInt(String.format("trees.%s.limit", block.getType().toString()))
-      );
-
-      Set<Block> leaves = new HashSet<Block>();
-
-      // 木の幹に隣接する葉を取得
-      for (Block stemBlock: stem) {
-        leaves.addAll(getLeaves(stemBlock));
-      }
-
-      // 幹と葉が両方とも存在する場合、両方の Set を結合する
-      if (!stem.isEmpty() && !leaves.isEmpty()) {
-        treeBlocks = Stream.concat(stem.stream(), leaves.stream())
-          .distinct()
-          .collect(Collectors.toSet());
-      }
-    }
-
-    return treeBlocks;
   }
 
   // 幹を取得
-  private Set<Block> getStem(Block block, int limit) {
+  public Set<Block> getStem(Block block, int limit) {
     Set<Block> stemBlocks = new HashSet<Block>();
     // 原木である場合
     if (isLog(block)) {
@@ -107,7 +79,7 @@ public class Lumberjack {
   }
 
   // 葉を取得
-  private Set<Block> getLeaves(Block block) {
+  public Set<Block> getLeaves(Block block) {
     Set<Block> leaves = new HashSet<Block>();
     // 原点が原木かどうか判定
     if (isLog(block)) {
@@ -161,12 +133,14 @@ public class Lumberjack {
     return blocks;
   }
 
-  public void breakTreeByPlayer(Set<Block> tree, Player player) {
+  public void breakTreeByPlayer(Set<Block> stem, Set<Block> leaves, BlockBreakEvent event) {
+
+    Player player = event.getPlayer();
     ItemStack item = player.getInventory().getItemInMainHand();
 
     if (player.getGameMode() == GameMode.CREATIVE && isAxe(item)) {
 
-      for (Block block: tree) {
+      for (Block block: Stream.concat(stem.stream(), leaves.stream()).collect(Collectors.toSet())) {
         BlockUtil.breakBlock(block);
       }
 
@@ -175,24 +149,32 @@ public class Lumberjack {
       Damageable tool = (Damageable)item.getItemMeta();
       int enchantLevel = item.getItemMeta().getEnchantLevel(Enchantment.DURABILITY);
 
-      for (Block block: tree) {
-        if (isLog(block)) {
+      if (item.getType().getMaxDurability() - tool.getDamage() >= stem.size() - 1) {
+
+        event.setCancelled(true);
+
+        for (Block block: stem) {
           int damage = ToolUtil.getDamageUnbreakableTool(random, enchantLevel);
           block.breakNaturally(item);
           tool.setDamage(tool.getDamage() + damage);
-        } else {
+        }
+
+        for (Block block: leaves) {
           block.breakNaturally();
         }
-      }
 
-      if (ToolUtil.isDamageableItemBroken(item)) {
-        player.spawnParticle(Particle.ITEM_CRACK, player.getLocation(), 1, item);
-        player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-      } else {
         item.setItemMeta((ItemMeta)tool);
+
+        if (ToolUtil.isDamageableItemBroken(item)) {
+          player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1, 1);
+          player.spawnParticle(Particle.ITEM_CRACK, player.getLocation(), 1, item);
+          player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+        }
+  
+        player.updateInventory();
+
       }
 
-      player.updateInventory();
     }
   }
 
