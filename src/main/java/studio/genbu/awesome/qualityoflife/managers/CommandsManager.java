@@ -22,14 +22,14 @@ public class CommandsManager implements CommandExecutor {
 
     String[] defaultMessage = {
       "§a§l============ Quality of Life ============",
-      " §a/qualifyoflife reload - プラグインを再読み込み"
+      " §a/qualityoflife reload - プラグインを再読み込み"
     };
 
     if (args.length != 0) {
       switch (args[0]) {
         case "reload":
           if (reload.reloadPlugin(sender)) {
-            sender.sendMessage("§aQualify of Life の設定ファイルを再読み込みしました。");
+            sender.sendMessage("§aQuality of Life の設定ファイルを再読み込みしました。");
             return true;
           } else {
             sender.sendMessage("§4そのコマンドを実行する権限がありません。");

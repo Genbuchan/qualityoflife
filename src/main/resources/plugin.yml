@@ -1,5 +1,5 @@
 name: QualityOfLife
-description: Improve your qualify of life (QOL).
+description: Improve your quality of life (QOL).
 authors: ['Genbuchan']
 version: ${project.version}
 api-version: 1.16
