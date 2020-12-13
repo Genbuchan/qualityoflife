@@ -1,0 +1,13 @@
+name: QualityOfLife
+description: Improve your qualify of life (QOL).
+authors: ['Genbuchan']
+version: ${project.version}
+api-version: 1.16
+main: studio.genbu.awesome.qualityoflife.QualityOfLife
+
+commands:
+  qualityoflife:
+    usage: "/<command>"
+    description: プラグインのコマンド一覧を表示
+    aliases:
+      - qol

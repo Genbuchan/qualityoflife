@@ -1,0 +1,8 @@
+target/
+.DS_Store
+.Spotlight-V100
+.trashes/
+Thumbs.db
+[Dd]esktop.ini
+.classpath
+.project
