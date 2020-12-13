@@ -1,11 +1,11 @@
-package studio.genbu.awesome.managers;
+package studio.genbu.awesome.qualityoflife.managers;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import studio.genbu.awesome.commands.Reload;
 import studio.genbu.awesome.qualityoflife.QualityOfLife;
+import studio.genbu.awesome.qualityoflife.commands.Reload;
 
 public class CommandsManager implements CommandExecutor {
 
@@ -26,11 +26,13 @@ public class CommandsManager implements CommandExecutor {
     };
 
     if (args.length != 0) {
-      switch(args[0]) {
+      switch (args[0]) {
         case "reload":
           reload.reloadPlugin();
           sender.sendMessage("§aQualify of Life の設定ファイルを再読み込みしました。");
           return true;
+        default:
+          break;
       }
     }
     

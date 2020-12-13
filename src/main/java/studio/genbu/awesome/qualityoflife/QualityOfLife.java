@@ -3,8 +3,8 @@ package studio.genbu.awesome.qualityoflife;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import studio.genbu.awesome.managers.CommandsManager;
 import studio.genbu.awesome.qualityoflife.events.BlockEvents;
+import studio.genbu.awesome.qualityoflife.managers.CommandsManager;
 
 public final class QualityOfLife extends JavaPlugin {
 

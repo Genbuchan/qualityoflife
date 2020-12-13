@@ -10,9 +10,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
-import studio.genbu.awesome.features.Farmer;
-import studio.genbu.awesome.features.Lumberjack;
 import studio.genbu.awesome.qualityoflife.QualityOfLife;
+import studio.genbu.awesome.qualityoflife.features.Farmer;
+import studio.genbu.awesome.qualityoflife.features.Lumberjack;
 
 public class BlockEvents implements Listener {
 
@@ -41,15 +41,17 @@ public class BlockEvents implements Listener {
     if (lumberjack.isLog(block) && !player.isSneaking()) {
       Set<Block> tree = lumberjack.getTree(block);
       if (!tree.isEmpty()) {
-        event.setCancelled(true);
+        if (player.getGameMode() != GameMode.CREATIVE) {
+          event.setCancelled(true);
+        }
         lumberjack.breakTreeByPlayer(tree, player);
       }
     }
 
     if (
-        farmer.isPlant(block) &&
-        !player.isSneaking() &&
-        player.getGameMode() != GameMode.CREATIVE
+        farmer.isPlant(block)
+        && !player.isSneaking()
+        && player.getGameMode() != GameMode.CREATIVE
     ) {
       farmer.replant(block);
     }

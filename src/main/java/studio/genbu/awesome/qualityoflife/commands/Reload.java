@@ -1,4 +1,4 @@
-package studio.genbu.awesome.commands;
+package studio.genbu.awesome.qualityoflife.commands;
 
 import studio.genbu.awesome.qualityoflife.QualityOfLife;
 

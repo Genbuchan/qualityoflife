@@ -1,4 +1,4 @@
-package studio.genbu.awesome.features;
+package studio.genbu.awesome.qualityoflife.features;
 
 import java.util.HashSet;
 import java.util.Random;

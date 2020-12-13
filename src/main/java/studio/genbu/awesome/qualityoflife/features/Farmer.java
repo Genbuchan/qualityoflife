@@ -1,4 +1,4 @@
-package studio.genbu.awesome.features;
+package studio.genbu.awesome.qualityoflife.features;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -48,8 +48,8 @@ public class Farmer {
           @Override
           public void run() {
             if (
-                block.getType() == Material.AIR &&
-                block.getRelative(BlockFace.DOWN).getBlockData() instanceof Farmland
+                block.getType() == Material.AIR
+                && block.getRelative(BlockFace.DOWN).getBlockData() instanceof Farmland
             ) {
               block.setType(material);
             }
