@@ -1,5 +1,7 @@
 package studio.genbu.awesome.qualityoflife.commands;
 
+import org.bukkit.command.CommandSender;
+
 import studio.genbu.awesome.qualityoflife.QualityOfLife;
 
 public class Reload {
@@ -10,8 +12,12 @@ public class Reload {
     this.main = qualityOfLife;
   }
 
-  public void reloadPlugin() {
-    main.reloadConfig();
+  public boolean reloadPlugin(CommandSender sender) {
+    if (sender.hasPermission("qualityoflife.commands.reload")) {
+      main.reloadConfig();
+      return true;
+    }
+    return false;
   }
 
 }

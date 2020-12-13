@@ -28,16 +28,20 @@ public class CommandsManager implements CommandExecutor {
     if (args.length != 0) {
       switch (args[0]) {
         case "reload":
-          reload.reloadPlugin();
-          sender.sendMessage("§aQualify of Life の設定ファイルを再読み込みしました。");
-          return true;
+          if (reload.reloadPlugin(sender)) {
+            sender.sendMessage("§aQualify of Life の設定ファイルを再読み込みしました。");
+            return true;
+          } else {
+            sender.sendMessage("§4そのコマンドを実行する権限がありません。");
+            return false;
+          }
         default:
           break;
       }
     }
     
     sender.sendMessage(defaultMessage);
-    return true;
+    return false;
 
   }
 

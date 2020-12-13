@@ -7,7 +7,19 @@ main: studio.genbu.awesome.qualityoflife.QualityOfLife
 
 commands:
   qualityoflife:
-    usage: "/<command>"
     description: プラグインのコマンド一覧を表示
     aliases:
       - qol
+
+permissions:
+  qualityoflife.*:
+    description: 全機能を実行できる権限を付与
+    default: op
+    children:
+      qualityoflife.commands.*: true
+  qualityoflife.commands.*:
+    description: 全コマンドを実行できる権限を付与
+    children:
+      qualityoflife.commands.reload: true
+  qualityoflife.commands.reload:
+    description: プラグインのリロードの権限を付与
