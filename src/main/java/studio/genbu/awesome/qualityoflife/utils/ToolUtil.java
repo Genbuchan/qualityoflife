@@ -1,4 +1,4 @@
-package studio.genbu.awesome.utils;
+package studio.genbu.awesome.qualityoflife.utils;
 
 import java.util.Random;
 

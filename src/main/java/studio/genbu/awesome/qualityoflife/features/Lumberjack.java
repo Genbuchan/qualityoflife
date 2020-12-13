@@ -18,8 +18,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import studio.genbu.awesome.utils.BlockUtil;
-import studio.genbu.awesome.utils.ToolUtil;
+import studio.genbu.awesome.qualityoflife.utils.BlockUtil;
+import studio.genbu.awesome.qualityoflife.utils.ToolUtil;
 
 public class Lumberjack {
   

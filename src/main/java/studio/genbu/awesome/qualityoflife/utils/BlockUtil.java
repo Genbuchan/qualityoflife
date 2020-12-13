@@ -1,7 +1,8 @@
-package studio.genbu.awesome.utils;
+package studio.genbu.awesome.qualityoflife.utils;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+
 public class BlockUtil {
   
   public static void breakBlock(Block block) {
